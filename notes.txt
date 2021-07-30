@@ -1,0 +1,27 @@
+
+
+
+plan:
+    . HANDLE THE ERRORS PROPERLY
+    . do i really need to keep the texts in dweet?
+    . remove useless comments and remove jankness
+    . some nice way to toggle debug prints with a flag
+      . a macro would be nice instead of if debug println!(....)
+        . debug!(text) - this takes care of the "{:?}" and the debug flag things
+    . take &[T] input instead of Vec<T> (confirm first why this happens)
+    . better way to turn off alerts in webelorts
+      . maybe another field? in WebElorts
+    . maybe nested searches? in webelorts
+      . like search between this and this and then search another time in this text
+    . maybe keep track of how many matches there were and if it goes different, then ping
+    . webElorts crashes if dweet links dont return stuff,
+      . message on discord about this?
+    . remElorts dosent execute at uniform time steps, maybe
+      update the message of the default reminder with exec time
+      and add another func that posts this on discord or something
+      so i can check on it
+    . do tuples work with structopts?
+      . maybe try if variable inputs works
+      . for time and date (int, int, int) or something
+
+

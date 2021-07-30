@@ -1,10 +1,10 @@
 #![allow(non_snake_case)]
 #![allow(dead_code)]
 
-mod remind;
+mod remElorts;
 mod dweet;
 mod discord;
-mod web_check;
+mod webElorts;
 mod search_and_chop;
 
 use structopt::StructOpt;
@@ -12,14 +12,17 @@ use structopt::StructOpt;
 #[derive(Debug, StructOpt)]
 #[structopt(name = "options")]
 pub enum Opt {
-    Reminders {
+    /// -c discord webhook -d dweet key
+    RemElorts {
         #[structopt(short = "c", long = "cordwebhook")]
         cordwebhook: String,
         
         #[structopt(short, long)]
         dweet: String,
     },
-    WebCheck {
+    
+    /// -c discord webhook -d dweet key -j json path (optional)
+    WebElorts {
         #[structopt(short, long)]
         cordwebhook: String,
         
@@ -27,11 +30,32 @@ pub enum Opt {
         dweet: String,
         
         #[structopt(short, long)]
-        input: String,
+        json: Option<String>,
+    },
+    
+    /// -d dweet key --date date(mm, dd) -t time(hh, mm) -m message
+    AddReminder {
+        #[structopt(short, long)]
+        dweet: String,
+        
+        #[structopt(long)]
+        date: Vec<u32>,
         
         #[structopt(short, long)]
-        json: bool,
-    }
+        time: Vec<u32>,
+        
+        #[structopt(short, long)]
+        message: String,
+    },
+    
+    /// -d dweet -j json path
+    UpdateWebElorts {
+        #[structopt(short, long)]
+        dweet: String,
+        
+        #[structopt(short, long)]
+        json: String,
+    },
 }
 
 fn main() {
@@ -39,11 +63,17 @@ fn main() {
     // println!("{:?}", opt);
     
     match opt {
-        Opt::Reminders{cordwebhook, dweet} => {
-            remind::remind(cordwebhook, dweet).unwrap();
-        }
-        Opt::WebCheck{cordwebhook, dweet, input, json} => {
-            web_check::elort(cordwebhook, dweet, input, json).unwrap();
-        }
+        Opt::RemElorts{cordwebhook, dweet} => {
+            remElorts::remind(cordwebhook, dweet).unwrap();
+        },
+        Opt::WebElorts{cordwebhook, dweet, json} => {
+            webElorts::check(cordwebhook, dweet, json).unwrap();
+        },
+        Opt::AddReminder{dweet, date, time, message} => {
+            remElorts::add_reminder(dweet, date, time, message).unwrap();
+        },
+        Opt::UpdateWebElorts{dweet, json} => {
+            webElorts::update(dweet, json).unwrap();
+        },
     }
 }
