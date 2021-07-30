@@ -14,7 +14,7 @@ struct WebElort {
     url: String,
     search_starts: Vec<String>,
     search_ends: Vec<String>,
-    texts: Vec<Vec<String>>,
+    // texts: Vec<Vec<String>>,
     texts_reverse: bool, // choose n items from the start(default) or end of the webpage
     texts_n: usize,
     message: String,
@@ -38,18 +38,18 @@ impl DiscordMsg for WebElort {
 impl WebElort {
     fn fetch(&mut self) -> Result<(), Box<dyn std::error::Error>> {
         let resp = reqwest::blocking::get(&self.url)?.text()?;
-        self.texts = vec![vec!(); self.search_ends.len()];
+        let mut texts = vec![vec!(); self.search_ends.len()];
         self.message = "".to_string();
         for i in 0..self.search_ends.len() {
             for txt in search_and_chop(&resp, &self.search_starts[i], &self.search_ends[i]) {
-                self.texts[i].push(txt.to_owned());
+                texts[i].push(txt.to_owned());
             }
-            if self.texts_reverse {self.texts[i].reverse()}
+            if self.texts_reverse {texts[i].reverse()}
             let message: String;
-            if self.texts[i].len() > self.texts_n {
-                message = self.texts[i][..self.texts_n].join(", ");
+            if texts[i].len() > self.texts_n {
+                message = texts[i][..self.texts_n].join(", ");
             } else {
-                message = self.texts[i].join(", ");
+                message = texts[i].join(", ");
             }
             self.message += &("new: ".to_owned() + &message).to_owned();
         }
