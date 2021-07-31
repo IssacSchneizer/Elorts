@@ -70,20 +70,20 @@ impl Dweet {
         let txt = res.text()?;
         if let serde_json::Value::Object(val) = from_str(&txt)? {
             if let serde_json::Value::String(bhal) = &val["this"] {
-                if let serde_json::Value::String(khal) = &val["because"] {
-                    match &bhal[..] {
-                        "succeeded" => (),
-                        "failed" => {
+                match &bhal[..] {
+                    "succeeded" => (),
+                    "failed" => {
+                        if let serde_json::Value::String(khal) = &val["because"] {
                             match &khal.split_whitespace().collect::<Vec<&str>>()[0][..] {
                                 "Rate" => return self.post_data(data),
                                 "the" => panic!("{}", &txt), // too long
                                 _ => panic!("{}", &txt),
                             }
-                        },
-                        _ => panic!("{}", &txt),
-                    }
-                } else {
-                    panic!("{}", &txt);
+                        } else {
+                            panic!("{}", &txt);
+                        }
+                    },
+                    _ => panic!("{}", &txt),
                 }
             } else {
                 panic!("{}", &txt);
