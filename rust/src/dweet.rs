@@ -95,7 +95,7 @@ impl MultiDweet {
         MultiDweet {
             dweet: Dweet::new(format!("{}-0", &dweekee)),
             dweekee,
-            charlimit: 5000, // idk why the site says 2k chars but accepts more than 10k
+            charlimit: 9000, // idk why the site says 2k chars but accepts more than 10k
             dweeindex: 0,
         }
     }
