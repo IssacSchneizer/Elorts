@@ -111,7 +111,7 @@ impl MultiDweet {
         MultiDweet {
             dweet: Dweet::new(format!("{}-0", &dweekee)),
             dweekee,
-            charlimit: 10000, // idk why the site says 2k chars but accepts more than 10k. seems to fail in ghub actions at 10k, 5k works
+            charlimit: 5000, // idk why the site says 2k chars but accepts more than 10k. seems to fail in ghub actions at 10k, 5k works
             dweeindex: 0,
         }
     }
